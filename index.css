@@ -1,0 +1,70 @@
+* {
+	box-sizing: border-box;
+}
+
+body, main {
+	font-family: Roboto, sans-serif;
+	padding: 30px;
+	max-width: 1000px;
+}
+
+body {
+	border: 5px solid;
+}
+
+.hidden {
+  display: none;
+}
+
+h1 {
+	font-size: 3.0em;
+	font-weight: bold;
+}
+
+.quizDescription {
+	font-style: italic;
+	padding: 20px;
+}
+
+.getStarted {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 50%;
+	padding: 0px;
+}
+
+.getStarted button {
+	width: 150px;
+	height: 150px;
+	font-weight: bold;
+	font-size: 1.3em;
+}
+
+.results {
+	display: inline-block;
+	width: 30%;
+	height: 40px;
+	border: lightgrey 1px solid;
+	padding-top: 12px;
+	padding-left: 6px;
+}
+
+.input-button {
+	width: 150px;
+	height: 40px;
+}
+
+button:disabled {
+	background-color: lightgray;
+	color: darkgray;
+}
+
+button:enabled {
+	background-color: red;
+	color: white;
+
+}
+
+.askQuestion {
+	padding: 15px;
+}
