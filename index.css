@@ -21,7 +21,7 @@ h1 {
 	font-weight: bold;
 }
 
-.quizDescription {
+.startDescription {
 	font-style: italic;
 	padding: 20px;
 }
@@ -45,8 +45,20 @@ h1 {
 	width: 30%;
 	height: 40px;
 	border: lightgrey 1px solid;
+	min-width: 120px;
+	padding: 6px;
 	padding-top: 12px;
-	padding-left: 6px;
+	text-align: center;
+}
+
+.progress {
+	width: 50%;
+	height: 40px;
+    padding: 6px;
+	padding-top: 12px;
+	margin-top: 10px;
+    min-width: 150px;
+	font-weight: bold;
 }
 
 .input-button {
@@ -67,4 +79,24 @@ button:enabled {
 
 .askQuestion {
 	padding: 15px;
+}
+
+section {
+	padding: 10px;
+}
+
+form {
+	margin: 10px;
+}
+
+button {
+	margin: 10px;
+}
+
+label {
+	margin: 5px;
+}
+
+legend {
+	margin: 5px;
 }

@@ -1,11 +1,11 @@
 "use strict"
 
-const questionPerQuiz = 5;
+const questionPerQuiz = 10;
 const quizMaterial = baseball;
 let questionList = [];
-let currentQuestion = 0;
-let correctQuestions = 0;
-let incorrectQuestions = 0;
+let thisQuiz = { currentQuestion: 0,
+                 correctQuestions: 0,
+                 incorrectQuestions: 0};
 
 
 function generateQuestionAnswerString(q) {
@@ -13,7 +13,7 @@ function generateQuestionAnswerString(q) {
 	let randomAnswers = [0,1,2,3];
 	shuffleList(randomAnswers);
 
-return 	`
+	return 	`
   <legend data-item-id="${q.qid}">${q.question}</legend>
   <div>	
 	<input data-item-id="${q.answers[randomAnswers[0]].aid}" type="radio" name="format" id="quiz" value="${q.answers[randomAnswers[0]].answer}" unchecked>
@@ -32,23 +32,48 @@ return 	`
 	<label for="quiz">${q.answers[randomAnswers[3]].answer}</label>
    </div> 
    <div class="js-submit-answer">
-	 <button class="input-button" type="button" disabled>Submit Answer</button>
+	 <button class="input-button js-input-button" type="button" disabled>Submit Answer</button>
     </div>
    `;
 }
 
+function generateResponseAnswerString(q, truth) {
+ 
+	let truthStatement = (truth) ? 'Correct! ':  'Incorrect: ';
 
-  function renderQuestion (questionObject) {
+	console.log(q);
+
+	return 	`
+		<legend>${truthStatement} ${q.response}</legend>
+		<div class="js-next-question">
+			<button class="input-button js-input-button" type="button">Next Question</button>
+		</div>
+   `;
+
+}
+
+function renderQuestion (questionObject) {
 
 	   /* send the object from the quizMaterial to generate the HTML */
-	   console.log(questionObject);
 	   const questionAnswerString = generateQuestionAnswerString(questionObject);
 
 	   $('.js-display-question').html(questionAnswerString);
-	   
-  }
+	   $('.js-display-question input').attr('disabled', false);
+	   $('.js-display-response').html(" ");
 
-   function shuffleList(arr) {
+}
+
+function renderResponse (questionObject, truth) {
+
+		/* send the object from the quizMaterial to generate the HTML */
+		const responseAnswerString = generateResponseAnswerString(questionObject, truth);
+
+		disableSubmittingAnotherAnswer();
+		$('.js-display-response').show();
+		$('.js-display-response').html(responseAnswerString);
+}
+
+function shuffleList(arr) {
 		/* Fisher-Yates shuffle algorithm */
 		for (let i = arr.length - 1; i > 0 ;  i--) {
 	        let j = Math.floor(Math.random() * (i + 1));
@@ -56,63 +81,118 @@ return 	`
 			arr[i] = arr[j];
 			arr[j] = t;
 		}
-   }
+}
 
-	function toggleQuestionSection(sectionClass) {
-		$('.js-ask-question').toggle();
-	}
+function completeQuiz() {
 
-	function toggleQuizResultsSection(sectionClass) {
-		$('.js-display-results').toggle();
-	}	
+	let finalText = ((thisQuiz.correctQuestions / (thisQuiz.correctQuestions + thisQuiz.incorrectQuestions)) > .79 ) ?
+		"You know your baseball!  Play again to see more questions." :
+		"You have learned some new things about baseball. Play the quiz again to learn more!";
 
-   function toggleStartButton() {
-	   $('.js-get-started').toggle();
-   }
+	 $('.js-start-quiz').show();
+	 $('.js-start-description').html(finalText);
+	 $('.js-display-question').hide();
+	 $('.js-display-response').hide();
+}
 
-   function initializeForNewQuiz() {
-		currentQuestion = 0;
-		correctQuestions = 0;
-		incorrectQuestions = 0;
-		toggleStartButton();
-		toggleQuizResultsSection();
-   }
+function initializeForNewQuiz() {
+		thisQuiz.currentQuestion = 0;
+		thisQuiz.correctQuestions = 0;
+		thisQuiz.incorrectQuestions = 0;
 
-   function createListOfQuestions(q, m) {
+		$('.js-start-quiz').hide();
+		displayTotals(0,0,0);
+		$('.js-display-question').show();
+		$('.js-display-results').show();
+}
+
+
+function createListOfQuestions(q, m) {
 		
 	    for (let i = 0; i < m.length; i++) { 
 		     q.push(i); 
         }
-   }
+}
 
-   function enableSubmittingAnswer() {
 
-		$('.js-display-question').on('click', 'input[type=radio]', function(event) {
-			
-			console.log("radio clicked answer to be selected.");
+function nextQuestion() {
+
+	$('.js-display-response').on('click', 'button', function(event) {
+
+		 ++thisQuiz.currentQuestion;
+		
+		  if ( thisQuiz.currentQuestion < questionPerQuiz ) {
+
+				renderQuestion(quizMaterial[questionList[thisQuiz.currentQuestion]]);
+		  }
+		  else {
+
+			    completeQuiz();
+		  }
+
+	});
+}
+
+
+function checkSubmittedAnswer() {
+
+		$('.js-display-question').on('click', 'button', function(event) {
+					
+			let answerID = $('.js-display-question input:checked').attr('data-item-id');
+			let foundAnswer = false;
+			let selectedIsTrue = false;
+
+			for (let x = 0; x < quizMaterial[questionList[thisQuiz.currentQuestion]].answers.length && !foundAnswer; x++) {
+
+				if (quizMaterial[questionList[thisQuiz.currentQuestion]].answers[x].aid === answerID) {
+					foundAnswer = true;
+					selectedIsTrue = quizMaterial[questionList[thisQuiz.currentQuestion]].answers[x].correct;
+
+					(selectedIsTrue) ? thisQuiz.correctQuestions++ : thisQuiz.incorrectQuestions++;
+				}
+			}
+
+			renderResponse(quizMaterial[questionList[thisQuiz.currentQuestion]],selectedIsTrue); 
+			displayTotals(thisQuiz.currentQuestion, thisQuiz.correctQuestions, thisQuiz.incorrectQuestions);
 
 		});
+}
 
-   }
+function displayTotals(total, right, wrong) {
 
-   function startQuiz() {
+	 $('#js-correct').html(right);
+	 $('#js-incorrect').html(wrong);
+	 $('#js-score').html((right/(++total) * 100).toFixed(1));
+}
+
+function enableSubmittingAnswer() {
+
+		$('.js-display-question').on('click', 'input[type=radio]', function(event) {
+			$('.js-display-question button').attr('disabled', false);
+		});
+}
+
+function disableSubmittingAnotherAnswer() {
+		$('.js-display-question button').attr('disabled', true);
+		$('.js-display-question input').attr('disabled', true);
+}
+
+function startNewQuiz() {
 
 		$('.js-start-quiz').click( function() {
 	
 			initializeForNewQuiz();
 			createListOfQuestions(questionList, quizMaterial);
-			console.log(questionList);
 			shuffleList(questionList);
-			console.log(questionList);
         	renderQuestion(quizMaterial[questionList[0]]);
 		});
-   }
+}
 
-   function handleQuiz() {
-
-	  startQuiz();
-	  enableSubmittingAnswer();
-
-   }
+function handleQuiz() {
+	  		startNewQuiz();
+	  		enableSubmittingAnswer();
+			checkSubmittedAnswer();
+			nextQuestion();  
+}
 
 $(handleQuiz);
