@@ -1,6 +1,6 @@
 "use strict"
 
-const questionPerQuiz = 10;
+const questionPerQuiz = 5;
 const quizMaterial = baseball;
 let questionList = [];
 let thisQuiz = { currentQuestion: 0,
@@ -60,6 +60,9 @@ function renderQuestion (questionObject) {
 	   $('.js-display-question').html(questionAnswerString);
 	   $('.js-display-question input').attr('disabled', false);
 	   $('.js-display-response').html(" ");
+	   $('.js-display-question').show();
+	   $('.js-ask-question').show();
+	   $('.js-display-response').hide();
 
 }
 
@@ -89,10 +92,9 @@ function completeQuiz() {
 		"You know your baseball!  Play again to see more questions." :
 		"You have learned some new things about baseball. Play the quiz again to learn more!";
 
-	 $('.js-start-quiz').show();
 	 $('.js-start-description').html(finalText);
-	 $('.js-display-question').hide();
-	 $('.js-display-response').hide();
+	 $('.js-start-quiz').show();
+	 $('.js-ask-question').hide();
 }
 
 function initializeForNewQuiz() {
@@ -104,6 +106,8 @@ function initializeForNewQuiz() {
 		displayTotals(0,0,0);
 		$('.js-display-question').show();
 		$('.js-display-results').show();
+		$('#js-currentQuestion').html(thisQuiz.currentQuestion + 1);
+		$('#js-totalQuestions').html(questionPerQuiz);
 }
 
 
@@ -120,13 +124,14 @@ function nextQuestion() {
 	$('.js-display-response').on('click', 'button', function(event) {
 
 		 ++thisQuiz.currentQuestion;
+		 $('.js-display-response').hide();
 		
 		  if ( thisQuiz.currentQuestion < questionPerQuiz ) {
 
+			    $('#js-currentQuestion').html(thisQuiz.currentQuestion + 1);
 				renderQuestion(quizMaterial[questionList[thisQuiz.currentQuestion]]);
 		  }
 		  else {
-
 			    completeQuiz();
 		  }
 
@@ -184,7 +189,9 @@ function startNewQuiz() {
 			initializeForNewQuiz();
 			createListOfQuestions(questionList, quizMaterial);
 			shuffleList(questionList);
-        	renderQuestion(quizMaterial[questionList[0]]);
+			renderQuestion(quizMaterial[questionList[0]]);
+			$('#js-currentQuestion').html(thisQuiz.currentQuestion + 1);
+			$('#js-totalQuestions').html(questionPerQuiz);
 		});
 }
 

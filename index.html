@@ -6,7 +6,7 @@
 		<meta name="description" content="Baseball quiz to learn baseball history" >
 		<title>Baseball Quiz</title>
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-		<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,300i,400i,500,700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Permanent+Marker|Raleway|Source+Sans+Pro&display=swap" rel="stylesheet">
 		<link href="index.css" rel="stylesheet" type="text/css" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	</head>
@@ -16,11 +16,13 @@
 		</header>	
 		<main role="main">
 			<section class="js-display-results displayResults hidden" aria-labelledby="score">
-			  <div>
-				<p class="results">Correct: <span id="js-correct">0</span></p><p class="results">Incorrect: <span id="js-incorrect">0</span></p><p class="results">Score: <span id="js-score">0</span>%</p>
+			  <div class="quiz-statistics scoreboard">
+				<p class="results">Correct: <span id="js-correct">0</span></p>
+				<p class="results">Incorrect: <span id="js-incorrect">0</span></p>
+				<p class="results">Score: <span id="js-score">0</span>%</p>
 			  </div>	
-			  <div>
-				<p class="progress">Question: <span id="js-currentQuestion">0</span> of <span id="js-totalQuestions">0</span></p>
+			  <div class="quiz-progress scoreboard">
+				<p class="progress"><span id="js-currentQuestion">0</span>  of  <span id="js-totalQuestions">0</span></p>
 			  </div>
 			</section>
 			<section class="js-start-quiz startQuiz" aria-labelledby="start">
@@ -29,7 +31,7 @@
 					<button class="js-start-button">Start Quiz</button>
 				</div>
 			</section>			
-			<section class="js-ask-question askQuestion">
+			<section class="js-ask-question askQuestion hidden">
 				<form class="js-display-question displayQuestion" aria-labelledby="question">
 					<!-- generate the question here -->
 				</form>
