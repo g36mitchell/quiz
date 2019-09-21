@@ -39,14 +39,14 @@ function generateQuestionAnswerString(q) {
 
 function generateResponseAnswerString(q, truth) {
  
-	let truthStatement = (truth) ? 'Correct! ':  'Incorrect: ';
+	let truthStatement = (truth) ? 'Correct!&nbsp;&nbsp;&nbsp;':  'Incorrect:&nbsp;&nbsp;&nbsp;';
 
 	console.log(q);
 
 	return 	`
 		<legend>${truthStatement} ${q.response}</legend>
 		<div class="js-next-question">
-			<button class="input-button js-input-button" type="button">Next Question</button>
+			<button class="input-button js-input-button" type="button">Next</button>
 		</div>
    `;
 
@@ -57,11 +57,11 @@ function renderQuestion (questionObject) {
 	   /* send the object from the quizMaterial to generate the HTML */
 	   const questionAnswerString = generateQuestionAnswerString(questionObject);
 
+	   $('.js-ask-question').show();
 	   $('.js-display-question').html(questionAnswerString);
 	   $('.js-display-question input').attr('disabled', false);
-	   $('.js-display-response').html(" ");
+	  /* $('.js-display-response').html(" "); */
 	   $('.js-display-question').show();
-	   $('.js-ask-question').show();
 	   $('.js-display-response').hide();
 
 }
@@ -72,8 +72,8 @@ function renderResponse (questionObject, truth) {
 		const responseAnswerString = generateResponseAnswerString(questionObject, truth);
 
 		disableSubmittingAnotherAnswer();
-		$('.js-display-response').show();
 		$('.js-display-response').html(responseAnswerString);
+		$('.js-display-response').show();
 }
 
 function shuffleList(arr) {
@@ -89,8 +89,8 @@ function shuffleList(arr) {
 function completeQuiz() {
 
 	let finalText = ((thisQuiz.correctQuestions / (thisQuiz.correctQuestions + thisQuiz.incorrectQuestions)) > .79 ) ?
-		"You know your baseball!  Play again to see more questions." :
-		"You have learned some new things about baseball. Play the quiz again to learn more!";
+		"You know your baseball!  Start the quiz again to see more questions to test your knowledge." :
+		"You have learned some new things about baseball. Start the quiz again to learn even more!";
 
 	 $('.js-start-description').html(finalText);
 	 $('.js-start-quiz').show();
