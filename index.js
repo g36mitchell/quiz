@@ -14,26 +14,23 @@ function generateQuestionAnswerString(q) {
 	shuffleList(randomAnswers);
 
 	return 	`
-  <legend data-item-id="${q.qid}">${q.question}</legend>
-  <div>	
-	<input data-item-id="${q.answers[randomAnswers[0]].aid}" type="radio" name="format" id="quiz" value="${q.answers[randomAnswers[0]].answer}" unchecked>
-	<label for="quiz">${q.answers[randomAnswers[0]].answer}</label>
-   </div>
-   <div>	
-	<input data-item-id="${q.answers[randomAnswers[1]].aid}" type="radio" name="format" id="quiz" value="${q.answers[randomAnswers[1]].answer}" unchecked>
-	<label for="quiz">${q.answers[randomAnswers[1]].answer}</label>
-   </div>
-   <div>	
-	<input data-item-id="${q.answers[randomAnswers[2]].aid}" type="radio" name="format" id="quiz" value="${q.answers[randomAnswers[2]].answer}" unchecked>
-	<label for="quiz">${q.answers[randomAnswers[2]].answer}</label>
-   </div>
-   <div>	
-	<input data-item-id="${q.answers[randomAnswers[3]].aid}" type="radio" name="format" id="quiz" value="${q.answers[randomAnswers[3]].answer}" unchecked>
-	<label for="quiz">${q.answers[randomAnswers[3]].answer}</label>
-   </div> 
-   <div class="js-submit-answer">
+  <legend aria-live="assertive" >${q.question}</legend>
+  	
+	<input  id="option1" type="radio" name="options"  value="${q.answers[randomAnswers[0]].answer}" data-item-id="${q.answers[randomAnswers[0]].aid}">
+	<label for="option1">${q.answers[randomAnswers[0]].answer}</label>
+	<br/>
+	<input  id="option2" type="radio" name="options"  value="${q.answers[randomAnswers[1]].answer}" data-item-id="${q.answers[randomAnswers[1]].aid}">
+	<label for="option2">${q.answers[randomAnswers[1]].answer}</label>
+	<br/>
+	<input  id="option3" type="radio" name="options" value="${q.answers[randomAnswers[2]].answer}" data-item-id="${q.answers[randomAnswers[2]].aid}">
+	<label for="option3">${q.answers[randomAnswers[2]].answer}</label>
+	<br/>
+	<input  id="option4" type="radio" name="options" value="${q.answers[randomAnswers[3]].answer}" data-item-id="${q.answers[randomAnswers[3]].aid}">
+	<label for="option4">${q.answers[randomAnswers[3]].answer}</label>
+  
+  <div class="js-submit-answer">
 	 <button class="input-button js-input-button" type="button" disabled>Submit Answer</button>
-    </div>
+  </div>
    `;
 }
 
@@ -44,7 +41,7 @@ function generateResponseAnswerString(q, truth) {
 	console.log(q);
 
 	return 	`
-		<legend>${truthStatement} ${q.response}</legend>
+		<legend aria-live="rude">${truthStatement} ${q.response}</legend>
 		<div class="js-next-question">
 			<button class="input-button js-input-button" type="button">Next</button>
 		</div>
@@ -60,7 +57,6 @@ function renderQuestion (questionObject) {
 	   $('.js-ask-question').show();
 	   $('.js-display-question').html(questionAnswerString);
 	   $('.js-display-question input').attr('disabled', false);
-	  /* $('.js-display-response').html(" "); */
 	   $('.js-display-question').show();
 	   $('.js-display-response').hide();
 
@@ -88,9 +84,10 @@ function shuffleList(arr) {
 
 function completeQuiz() {
 
-	let finalText = ((thisQuiz.correctQuestions / (thisQuiz.correctQuestions + thisQuiz.incorrectQuestions)) > .79 ) ?
-		"You know your baseball!  Start the quiz again to see more questions to test your knowledge." :
-		"You have learned some new things about baseball. Start the quiz again to learn even more!";
+	let score = (thisQuiz.correctQuestions / (thisQuiz.correctQuestions + thisQuiz.incorrectQuestions)) * 100;
+	let finalText =  (score > 79 ) ?
+		`Your score is ${score}%.  You know your baseball!  Start the quiz again to see more questions to test your knowledge.` :
+		`Your score is ${score}%.  You have learned some new things about baseball. Start the quiz again to learn even more!`;
 
 	 $('.js-start-description').html(finalText);
 	 $('.js-start-quiz').show();
@@ -184,8 +181,10 @@ function disableSubmittingAnotherAnswer() {
 
 function startNewQuiz() {
 
+	$('.js-display-results').hide();
+	$('.js-ask-question').hide();
+
 		$('.js-start-quiz').click( function() {
-	
 			initializeForNewQuiz();
 			createListOfQuestions(questionList, quizMaterial);
 			shuffleList(questionList);
@@ -196,7 +195,7 @@ function startNewQuiz() {
 }
 
 function handleQuiz() {
-	  		startNewQuiz();
+			startNewQuiz();
 	  		enableSubmittingAnswer();
 			checkSubmittedAnswer();
 			nextQuestion();  

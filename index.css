@@ -6,9 +6,10 @@ body {
 	font-family: 'Source Sans Pro', sans-serif;
 	background-image: url("images/grass-tile.jpg");
 	background-color:  #577A26;
+	max-width: 1000px;
 }
 
-header {
+.page-header {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
@@ -33,7 +34,6 @@ h1 {
 
 main {
 	padding: 20px 20px 20px 20px;
-	max-width: 1000px;
 	margin: 50px;
 	background-color: rgba(255, 255, 255, 0.2);
 	color: #474747;	
@@ -45,12 +45,13 @@ main {
 
 
 
-.startDescription {
+h2 {
 	padding: 20px;
 	font-size: 1.7em;
 	color: whitesmoke;
 	text-align: center;
 }
+
 
 .getStarted {
 	display: flex;
@@ -63,6 +64,7 @@ main {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
+	font-size: 1.3em;
 }
 
 .getStarted button {
@@ -74,6 +76,7 @@ main {
 
 
 .results {
+	font-family: 'Permanent Marker', cursive; 
 	width: 30%;
 	height: 50px;
 	background-color: #474747;
@@ -81,18 +84,19 @@ main {
 	color: whitesmoke;
 	padding-top: 12px;
 	text-align: center;
+	font-size: 1.2em;
 }
 
 
 .progress {
 	font-family: 'Permanent Marker', cursive; 
 	width: 50%;
-	height: 50px;
+	height: 75px;
 	background-color: #474747;
 	border: grey 2px solid;
 	color: whitesmoke;
 	text-align: center;
-	padding-top: 6px;
+	padding-top: 10px;
     font-size: 2.0em;
 }
 
