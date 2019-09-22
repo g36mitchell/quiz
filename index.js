@@ -33,11 +33,12 @@ function initializeQuiz(thisQuiz) {
 
 function updateScoreBoard(thisQuiz, total) {
 
+	let score = (thisQuiz.current === 0) ? 0 : (thisQuiz.right / (thisQuiz.right + thisQuiz.wrong)) * 100;
 	$('#js-currentQuestion').html(thisQuiz.current + 1);  /*currentQuestion is an arry pointer */
 	$('#js-totalQuestions').html(total);
 	$('#js-correct').html(thisQuiz.right);
 	$('#js-incorrect').html(thisQuiz.wrong);
-	$('#js-score').html((thisQuiz.right/(++total) * 100).toFixed(1));
+	$('#js-score').html(score);
 	$('.js-display-results').show();
 }
 
