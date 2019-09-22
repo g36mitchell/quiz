@@ -17,17 +17,17 @@ body {
 
 h1 {
 	font-family: 'Permanent Marker', cursive;
-	font-size: 4.0em;
+	font-size: 4.5em;
 	font-weight: bold;
 	color: whitesmoke;
-	margin: 20px;
+	margin: 15px;
 }
 
 .baseball-picture {
 	background-image: url("images/baseball.png");
 	min-width: 80px;
 	height: 80px;
-	margin: 20px;
+	margin: 15px;
 	background-repeat: no-repeat;
     background-size: auto;
 }

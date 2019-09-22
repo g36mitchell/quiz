@@ -16,31 +16,27 @@
 				<div class="baseball-picture"></div>
 				<h1>Baseball Quiz</h1>
 			</section>
-			<section role="status" class="js-display-results displayResults" >
-					<div class="quiz-statistics scoreboard">
-					  <p class="results"><span id="js-correct">0</span> right</p>
-					  <p class="results"><span id="js-incorrect">0</span> wrong</p>
-					  <p class="results"><span id="js-score">0</span>%</p>
+			<section role="status" class="js-display-results displayResults hidden" >
+				  <div class="quiz-progress scoreboard">
+					<p class="progress"><span id="js-currentQuestion">0</span>  of  <span id="js-totalQuestions">0</span></p>
+				  </div>
+				  <div class="quiz-statistics scoreboard">
+					  <p class="results"><span id="js-correct">0</span> right</p><p class="results"><span id="js-incorrect">0</span> wrong</p><p class="results"><span id="js-score">0</span>%</p>
 					</div>	
-					<div class="quiz-progress scoreboard">
-					  <p class="progress"><span id="js-currentQuestion">0</span>  of  <span id="js-totalQuestions">0</span></p>
-					</div>
 			</section>
 		</header>	
 		<main role="main" aria-live="assertive">
-			<section class="js-start-quiz startQuiz" aria-labelledby="start">
+			<section class="js-start-quiz startQuiz">
 				<h2 class="js-start-description startDescription">Baseball is America's favorite pastime.  Test your knowledge of this historical game.</h2>
 				<div class="getStarted">
 					<button class="js-start-button">Start Quiz</button>
 				</div>
 			</section>			
-			<section class="js-ask-question askQuestion" tabindex="-1">
-				<form>
-					<fieldset class="js-display-question displayQuestion">
+			<section class="js-ask-question askQuestion hidden">
+				<form id="js-question" class="js-display-question displayQuestion" >
 					<!-- generate the question here -->
-					</fieldset>
 				</form>
-				<form class="js-display-response displayAnswer">
+				<form id="js-answer" class="js-display-response displayAnswer">
 					<!-- generate the answer information here -->
 				</form>
 			</section>
