@@ -6,9 +6,7 @@ let questionList = [];   /* randomized list of indexes to access the quiz conten
 
 function startNewQuiz(thisQuiz) {
 
-	console.log("startNewQuiz");
 	$('.js-start-button').click( function() {
-		console.log("insideStartNewQuiz");
 		initializeQuiz(thisQuiz);
 		renderQuestion(quizMaterial[questionList[thisQuiz.current]]);
 	});
@@ -38,7 +36,7 @@ function updateScoreBoard(thisQuiz, total) {
 	$('#js-totalQuestions').html(total);
 	$('#js-correct').html(thisQuiz.right);
 	$('#js-incorrect').html(thisQuiz.wrong);
-	$('#js-score').html(score);
+	$('#js-score').html(score.toFixed(1));
 	$('.js-display-results').show();
 }
 
@@ -69,6 +67,7 @@ function renderQuestion (questionObject) {
 	$('.js-display-question').html(questionAnswerString);
 	$('.js-display-question').show();
 	$('.js-display-response').hide();
+	$('.js-display-question button').attr('disabled', true);
 }
 
 function generateQuestionAnswerString(q) {
@@ -83,8 +82,8 @@ function generateQuestionAnswerString(q) {
 			  <legend aria-live="assertive" >${q.question}</legend>
 	 	</div>
 		<div>
-		 	<input  checked id="option1" type="radio" name="options"  value="${q.answers[randomAnswers[0]].answer}" data-item-id="${q.answers[randomAnswers[0]].aid}">
-			<label         for="option1">${q.answers[randomAnswers[0]].answer}</label>
+		 	<input  id="option1" type="radio" name="options"  value="${q.answers[randomAnswers[0]].answer}" data-item-id="${q.answers[randomAnswers[0]].aid}">
+			<label for="option1">${q.answers[randomAnswers[0]].answer}</label>
 			<br/>
 			<input  id="option2" type="radio" name="options"  value="${q.answers[randomAnswers[1]].answer}" data-item-id="${q.answers[randomAnswers[1]].aid}">
 			<label for="option2">${q.answers[randomAnswers[1]].answer}</label>
@@ -93,7 +92,8 @@ function generateQuestionAnswerString(q) {
 			<label for="option3">${q.answers[randomAnswers[2]].answer}</label>
 			<br/>
 			<input  id="option4" type="radio" name="options" value="${q.answers[randomAnswers[3]].answer}" data-item-id="${q.answers[randomAnswers[3]].aid}">
-			<label for="option4">${q.answers[randomAnswers[3]].answer}</label></div>
+			<label for="option4">${q.answers[randomAnswers[3]].answer}</label>
+		</div>
   		<div class="js-submit-answer">
 	 		<button class="input-button js-input-button" type="submit">Submit Answer</button>
 		</div>
@@ -101,11 +101,20 @@ function generateQuestionAnswerString(q) {
    `;
 }
 
+
+function enableSubmit() {
+
+	$('.js-display-question').on('click', 'input[type=radio]', function(event) {
+
+		$('.js-display-question button').attr('disabled', false);
+
+	});
+}
+
+
 function generateResponseAnswerString(q, truth) {
  
 	let truthStatement = (truth) ? 'Correct!&nbsp;&nbsp;&nbsp;':  'Incorrect:&nbsp;&nbsp;&nbsp;';
-
-	console.log(q);
 
 	return 	`
 		<legend aria-live="rude">${truthStatement} ${q.response}</legend>
@@ -133,7 +142,7 @@ function renderResponse (questionObject, truth) {
 function completeQuiz(thisQuiz) {
 
 	let score = (thisQuiz.right / (thisQuiz.right + thisQuiz.wrong)) * 100;
-	let finalText =  (score > 79 ) ?
+	let finalText =  (score.toFixed(1) > 79 ) ?
 		`Your score is ${score}%.  You know your baseball!  Start the quiz again to see more questions to test your knowledge.` :
 		`Your score is ${score}%.  You have learned some new things about baseball. Start the quiz again to learn even more!`;
 
@@ -166,13 +175,8 @@ function nextQuestion(thisQuiz) {
 
 function checkSubmittedAnswer(thisQuiz) {
 
-		console.log($('.js-display-question'));
-
-		
 		$('#js-question').on('submit', function(event) {
 			
-			console.log("Inside the submit button action");
-
 			event.preventDefault();  // ignore default responses for form 
 
 
@@ -213,6 +217,7 @@ function handleQuiz() {
 					};
 
 	startNewQuiz(thisQuiz);
+	enableSubmit();
 	checkSubmittedAnswer(thisQuiz);
 	nextQuestion(thisQuiz);  
 }
