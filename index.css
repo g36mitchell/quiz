@@ -3,6 +3,8 @@
 }
 
 body {
+	margin-left: auto;
+	margin-right: auto;
 	font-family: 'Source Sans Pro', sans-serif;
 	background-image: url("images/grass-tile.jpg");
 	background-color:  #577A26;
